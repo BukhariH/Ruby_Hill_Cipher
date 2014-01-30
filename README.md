@@ -14,7 +14,7 @@ ruby encrypt.rb your_file.txt
 ```
 
 This will produce two files:
-* your_file.txt.encrypted
+* encrypted_file
 * key.pub
 
 Now go ahead and share those two files in WW1 fashion.
@@ -23,10 +23,18 @@ Now go ahead and share those two files in WW1 fashion.
 Using files created earlier:
 
 ``` bash
-ruby decrypt.rb key.pub your_file.txt.encrypted
+ruby decrypt.rb key.pub encrypted_file
 ```
 Now a new decrypted file will be created:
-your_file.txt.decrypted
+decrypted_file.txt
+
+### Test
+Best to run test first:
+
+``` bash
+cd test/
+ruby test.rb
+```
 
 ## Warning
 
