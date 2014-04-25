@@ -15,31 +15,30 @@ class Integer
       q, r = a / b, a % b
     end
 
-    raise RuntimeError.new("#{self} has no inverse modulo #{modulus}") unless b == 1
+    fail RuntimeError.new("#{self} has no inverse modulo #{modulus}") unless b == 1
     t1
   end
 end
 
 class Encrypt
   def self.cipher(file)
-    while
+    while true
       m = Matrix.build(3) { SecureRandom.random_number(255) + 1 }
       mod_det = m.determinant % 256
       next if mod_det == 0
       begin
         det_inv = mod_det.modinv(256)
         break
-      rescue RuntimeError => e
-        puts e
+      rescue RuntimeError
         next
       end
     end
 
     # Inverse Decryption Matrix
     inv = Matrix[
-      [ (m[2,2]*m[1,1] - m[2,1]*m[1,2]), -(m[2,2]*m[0,1] - m[2,1]*m[0,2]),  (m[1,2]*m[0,1] - m[1,1]*m[0,2])],
-      [-(m[2,2]*m[1,0] - m[2,0]*m[1,2]),  (m[2,2]*m[0,0] - m[2,0]*m[0,2]), -(m[1,2]*m[0,0] - m[1,0]*m[0,2])],
-      [ (m[2,1]*m[1,0] - m[2,0]*m[1,1]), -(m[2,1]*m[0,0] - m[2,0]*m[0,1]),  (m[1,1]*m[0,0] - m[1,0]*m[0,1])]
+      [(m[2, 2] * m[1, 1] - m[2, 1] * m[1, 2]), -(m[2, 2] * m[0, 1] - m[2, 1] * m[0, 2]),  (m[1, 2] * m[0, 1] - m[1, 1] * m[0, 2])],
+      [-(m[2, 2] * m[1, 0] - m[2, 0] * m[1, 2]),  (m[2, 2] * m[0, 0] - m[2, 0] * m[0, 2]), -(m[1, 2] * m[0, 0] - m[1, 0] * m[0, 2])],
+      [(m[2, 1] * m[1, 0] - m[2, 0] * m[1, 1]), -(m[2, 1] * m[0, 0] - m[2, 0] * m[0, 1]),  (m[1, 1] * m[0, 0] - m[1, 0] * m[0, 1])]
     ].map { |e| e * det_inv % 256 }
 
     # Turns the string from the file into an array of characters

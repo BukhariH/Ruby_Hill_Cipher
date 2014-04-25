@@ -2,11 +2,9 @@ require 'matrix'
 
 class Decrypt
   def self.decrypt_cipher(key, vol)
-
     salt = '9fea3112b6475ddcb88ac2630dbcb18acfb6cd586aeaa2b0d181c5964f53936038ac4a836448d3bfbf40486733618407df4d41cc43f6de96abb57a7aa3968ac4'
     inv = key.split(salt).map { |x| x.to_i }.each_slice(3).to_a
     enc_msg = vol.split(salt).map { |x| x.to_i }.each_slice(3).to_a
-
 
     dec_key = Matrix.rows(enc_msg) * Matrix.rows(inv)
     dec_key = dec_key.map { |e| e % 256 }
